@@ -7,6 +7,7 @@ import { Auth } from 'aws-amplify'
 import Tabs from './auth/Tabs'
 import Nav from './nav/Nav'
 
+
 class App extends React.Component {
     state = {
         user: {},

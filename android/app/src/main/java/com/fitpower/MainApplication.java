@@ -3,6 +3,8 @@ package com.fitpower;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
+import com.polidea.reactnativeble.BlePackage;
 import com.amazonaws.RNAWSCognitoPackage;
 import com.amazonaws.RNAWSCognitoPackage;
 import com.amazonaws.RNAWSCognitoPackage;
@@ -26,6 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RCTBluetoothSerialPackage(),
+            new BlePackage(),
             new RNAWSCognitoPackage()
       );
     }

@@ -137,7 +137,9 @@ android {
 }
 
 dependencies {
-    compile project(':amazon-cognito-identity-js')
+    implementation project(':react-native-bluetooth-serial')
+    implementation project(':react-native-ble-plx')
+    implementation project(':amazon-cognito-identity-js')
     implementation project(':amazon-cognito-identity-js')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"

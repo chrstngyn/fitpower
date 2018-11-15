@@ -92,9 +92,13 @@ class SignIn extends React.Component {
                 />
                 <Text style={[styles.errorMessage, signInError && { color: 'black' }]}>Error logging in. Please try again.</Text>
                 <Text style={[styles.errorMessage, signInError && { color: 'black' }]}>{signInErrorMessage}</Text>
+
+                <Button
+
+                />
                 {
                     showSignInConfirmationModal && (
-                        <Modal>
+                        <Modal onRequestClose={() => null}>
                             <View style={styles.modal}>
                                 <Input
                                     placeholder="Authorization Code"

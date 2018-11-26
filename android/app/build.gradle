@@ -137,6 +137,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-bluetooth-serial')
+    compile project(':react-native-ble-plx')
     implementation project(':react-native-bluetooth-serial')
     implementation project(':react-native-ble-plx')
     implementation project(':amazon-cognito-identity-js')

@@ -1,0 +1,16 @@
+{
+    "projectName": "fitpower",
+    "projectPath": "C:\\Users\\chn32\\Documents\\fitpower\\fitpower",
+    "defaultEditor": "none",
+    "frontendHandler": {
+        "android": "C:\\Users\\chn32\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-frontend-android"
+    },
+    "amplify-frontend-android": {
+        "config": {
+            "ResDir": "app/src/main/res"
+        }
+    },
+    "providers": {
+        "awscloudformation": "C:\\Users\\chn32\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-provider-awscloudformation"
+    }
+}

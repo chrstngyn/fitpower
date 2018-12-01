@@ -198,13 +198,12 @@ class Home extends React.Component {
             'date' : d.getFullYear() +
                 "/" + (d.getMonth() + 1) +
                 "/" + d.getDate(),
-
         })
         this.setState({ workoutArray: this.state.workoutArray })
     }
 
     deleteWorkout(key) {
-        this.state.workOutArray.splice(key, 1);
+        this.state.workoutArray.splice(key, 1);
         this.setState({ workoutArray: this.state.workoutArray })
     }
 

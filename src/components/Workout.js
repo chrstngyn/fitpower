@@ -7,7 +7,7 @@ export default class Workout extends React.Component {
             <View key={this.props.keyval} style={styles.workout}>
                 <Text style={styles.displayData}>{this.props.val.output}</Text>
                 <Text style={styles.displayData}>{this.props.val.predict}</Text>
-                <TouchableOpacity onPress={this.props.deleteWorkout} style={styles.workoutDelete}>
+                <TouchableOpacity onPress={this.props.deleteMethod} style={styles.workoutDelete}>
                     <Text style={styles.workoutDeleteText}>D</Text>
                  </TouchableOpacity>
             </View>

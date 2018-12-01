@@ -68,6 +68,7 @@
 		793726B78FC8404D8ADE63D0 /* Raleway-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C7A5BC5483364EB8A181D994 /* Raleway-ThinItalic.ttf */; };
 		8355F22046C04FFEB3022CC8 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A656DF27648B4D54A409F19E /* libBleClient.a */; };
 		81664D934C4F467793F69A2C /* libRCTBluetoothSerial.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B9954D5A26144A7A639E3BE /* libRCTBluetoothSerial.a */; };
+		4318FDD4A40B460EB98A6108 /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6557FD60754739B9B5EE5B /* libWatermelonDB.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -407,6 +408,8 @@
 		A656DF27648B4D54A409F19E /* libBleClient.a */ = {isa = PBXFileReference; name = "libBleClient.a"; path = "libBleClient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		A9DD512B727F4FEEB87D65DC /* RCTBluetoothSerial.xcodeproj */ = {isa = PBXFileReference; name = "RCTBluetoothSerial.xcodeproj"; path = "../node_modules/react-native-bluetooth-serial/ios/RCTBluetoothSerial.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		1B9954D5A26144A7A639E3BE /* libRCTBluetoothSerial.a */ = {isa = PBXFileReference; name = "libRCTBluetoothSerial.a"; path = "libRCTBluetoothSerial.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		6BC618A66E2647E094E81791 /* WatermelonDB.xcodeproj */ = {isa = PBXFileReference; name = "WatermelonDB.xcodeproj"; path = "../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		CE6557FD60754739B9B5EE5B /* libWatermelonDB.a */ = {isa = PBXFileReference; name = "libWatermelonDB.a"; path = "libWatermelonDB.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,6 +440,7 @@
 				88177BE3746647C2BD3E942F /* libRNAWSCognito.a in Frameworks */,
 				8355F22046C04FFEB3022CC8 /* libBleClient.a in Frameworks */,
 				81664D934C4F467793F69A2C /* libRCTBluetoothSerial.a in Frameworks */,
+				4318FDD4A40B460EB98A6108 /* libWatermelonDB.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +630,7 @@
 				9DDD76C0DB6745ACB103006D /* RNAWSCognito.xcodeproj */,
 				A5D4F9E01424436C9A882E8F /* BleClient.xcodeproj */,
 				A9DD512B727F4FEEB87D65DC /* RCTBluetoothSerial.xcodeproj */,
+				6BC618A66E2647E094E81791 /* WatermelonDB.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1321,12 +1326,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Debug;
@@ -1351,12 +1358,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Release;
@@ -1382,6 +1391,7 @@
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Debug;
@@ -1406,6 +1416,7 @@
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Release;
@@ -1438,12 +1449,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Debug;
@@ -1476,12 +1489,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Release;
@@ -1513,12 +1528,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Debug;
@@ -1550,12 +1567,14 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)\..\node_modules\amazon-cognito-identity-js\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-ble-plx\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-bluetooth-serial\ios\RCTBluetoothSerial",
+					"$(SRCROOT)\..\node_modules\@nozbe\watermelondb\native\ios\WatermelonDB\SupportingFiles/**",
 				);
 			};
 			name = Release;

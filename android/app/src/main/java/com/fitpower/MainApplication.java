@@ -3,6 +3,7 @@ package com.fitpower;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.amazonaws.RNAWSCognitoPackage;
 import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
 import com.polidea.reactnativeble.BlePackage;
 import com.rusel.RCTBluetoothSerial.RCTBluetoothSerialPackage;
@@ -14,6 +15,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.nozbe.watermelondb.WatermelonDBPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +32,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNAWSCognitoPackage(),
+          new WatermelonDBPackage(),
             new RCTBluetoothSerialPackage(),
-            new BlePackage(),
-            new RNAWSCognitoPackage()
+            new BlePackage()
       );
     }
 

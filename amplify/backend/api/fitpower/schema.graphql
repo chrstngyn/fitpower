@@ -1,0 +1,5 @@
+type Todo @model {
+  id: ID!
+  workout: String!
+  description: String
+}

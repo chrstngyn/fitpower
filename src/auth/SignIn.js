@@ -63,12 +63,10 @@ class SignIn extends React.Component {
                         resizeMode="contain"
                     />
                 </View>
-                <Text style={[styles.greeting]}>
-                    Welcome back,
+                <Text style={[styles.welcome]}>
+                    Welcome to Fit Power
                 </Text>
-                <Text style={[styles.greeting2]}>
-                    sign in to continue
-                </Text>
+
                 <View style={styles.inputContainer}>
                     <Input
                         placeholder="User Name"
@@ -160,15 +158,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 40
     },
-    greeting: {
+    welcome: {
         marginTop: 20,
         fontSize: 24,
-        fontFamily: fonts.light
-    },
-    greeting2: {
-        color: '#666',
-        fontSize: 24,
-        marginTop: 5,
         fontFamily: fonts.light
     }
 });

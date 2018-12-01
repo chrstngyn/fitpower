@@ -1,4 +1,6 @@
 rootProject.name = 'fitpower'
+include ':amazon-cognito-identity-js'
+project(':amazon-cognito-identity-js').projectDir = new File(rootProject.projectDir, '../node_modules/amazon-cognito-identity-js/android')
 include ':react-native-bluetooth-serial'
 project(':react-native-bluetooth-serial').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bluetooth-serial/android')
 include ':react-native-ble-plx'
@@ -13,5 +15,6 @@ include ':amazon-cognito-identity-js'
 project(':amazon-cognito-identity-js').projectDir = new File(rootProject.projectDir, '../node_modules/amazon-cognito-identity-js/android')
 include ':amazon-cognito-identity-js'
 project(':amazon-cognito-identity-js').projectDir = new File(rootProject.projectDir, '../node_modules/amazon-cognito-identity-js/android')
-
+include ':watermelondb'
+project(':watermelondb').projectDir = new File(rootProject.projectDir, '../node_modules/@nozbe/watermelondb/native/android')
 include ':app'

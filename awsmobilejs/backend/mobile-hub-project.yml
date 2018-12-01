@@ -1,18 +1,122 @@
 --- !com.amazonaws.mobilehub.v0.Project 
+apps:
+  react-native: !com.amazonaws.mobilehub.v0.AppDO {}
 features:
+  cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic 
+    components:
+      WorkoutsCRUD: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: WorkoutsCRUD
+          requires-signin: true
+          sdk-generation-stage-name: Development
+        paths:
+          /Workouts: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/Workouts-20181129132404.zip
+            description: 'Handler for calls to resource path : /Workouts/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: y64MR+GD3OZvYoHrqzvMjN5onjAa+zVZEz5PI6CUq7s=
+            memorySize: '128'
+            modified: '2018-11-29T18:25:49.498+0000'
+            name: Workouts
+            runtime: nodejs6.10
+            timeout: '3'
+            version: d12o6bDZ9tI0OW9GVkrshRYh7Omqg2O3
+          '/Workouts/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/Workouts-20181129132404.zip
+            description: 'Handler for calls to resource path : /Workouts/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: y64MR+GD3OZvYoHrqzvMjN5onjAa+zVZEz5PI6CUq7s=
+            memorySize: '128'
+            modified: '2018-11-29T18:25:49.498+0000'
+            name: Workouts
+            runtime: nodejs6.10
+            timeout: '3'
+            version: BeIpvcg6EzYTbzlotLMDLpo8IN30IGef
+      sampleCloudApi: !com.amazonaws.mobilehub.v0.API 
+        attributes:
+          name: sampleCloudApi
+          requires-signin: false
+          sdk-generation-stage-name: Development
+        paths:
+          /items: !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/sampleLambda-20181129132404.zip
+            description: 'Handler for calls to resource path : /items/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: G9o5+UA+wJ7PW3TEyscA/Vs5AOKDx6o7wWpJmvWe20U=
+            memorySize: '128'
+            modified: '2018-11-29T18:25:58.828+0000'
+            name: sampleLambda
+            runtime: nodejs6.10
+            timeout: '3'
+            version: kJhC2ZeSkXMTE9WKZxzSytrYSi1BRq.s
+          '/items/{proxy+}': !com.amazonaws.mobilehub.v0.Function 
+            codeFilename: uploads/sampleLambda-20181129132404.zip
+            description: 'Handler for calls to resource path : /items/{proxy+}'
+            enableCORS: true
+            environment: {}
+            handler: lambda.handler
+            hashcode: G9o5+UA+wJ7PW3TEyscA/Vs5AOKDx6o7wWpJmvWe20U=
+            memorySize: '128'
+            modified: '2018-11-29T18:25:58.828+0000'
+            name: sampleLambda
+            runtime: nodejs6.10
+            timeout: '3'
+            version: Ae6yVSm5DKU4cyQJiTWIuntIgyZ7JRMY
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
       visibility: public-global
     components:
       release: !com.amazonaws.mobilehub.v0.Bucket {}
+  database: !com.amazonaws.mobilehub.v0.Database 
+    components:
+      database-nosql: !com.amazonaws.mobilehub.v0.NoSQLDatabase 
+        tables:
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              email: S
+              personId: S
+              personName: S
+              phone: S
+              teamId: S
+            hashKeyName: teamId
+            hashKeyType: S
+            indexes:
+              - !com.amazonaws.mobilehub.v0.NoSQLIndex 
+                hashKeyName: teamId
+                hashKeyType: S
+                indexName: personName-index
+                rangeKeyName: personName
+                rangeKeyType: S
+            rangeKeyName: personId
+            rangeKeyType: S
+            tableName: ___DYNAMIC_PREFIX___-AWSMobileTable
+            tablePrivacy: public
+          - !com.amazonaws.mobilehub.v0.NoSQLTable 
+            attributes:
+              powerGenerated: NS
+              userEmail: S
+              userId: S
+              userWeight: N
+            hashKeyName: userId
+            hashKeyType: S
+            rangeKeyName: ''
+            rangeKeyType: ''
+            tableName: ___DYNAMIC_PREFIX___-Workouts
+            tablePrivacy: private
   mobile-analytics: !com.amazonaws.mobilehub.v0.Pinpoint 
     components:
       analytics: !com.amazonaws.mobilehub.v0.PinpointAnalytics {}
   sign-in: !com.amazonaws.mobilehub.v0.SignIn 
     attributes:
       enabled: true
-      optional-sign-in: true
+      optional-sign-in: false
     components:
       sign-in-user-pools: !com.amazonaws.mobilehub.v0.UserPoolsIdentityProvider 
         attributes:

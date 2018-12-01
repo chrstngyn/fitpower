@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
 
 import com.android.build.OutputFile
 
@@ -137,8 +138,10 @@ android {
 }
 
 dependencies {
+    compile project(':amazon-cognito-identity-js')
     compile project(':react-native-bluetooth-serial')
     compile project(':react-native-ble-plx')
+    compile project(':watermelondb')
     implementation project(':react-native-bluetooth-serial')
     implementation project(':react-native-ble-plx')
     implementation project(':amazon-cognito-identity-js')

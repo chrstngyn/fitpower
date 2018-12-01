@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-    Platform,
-    Text,
-    View,
-    TextInput,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    ActivityIndicator,
-    Modal
-} from 'react-native';
+import { Platform, Text, View, TextInput, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Modal } from 'react-native';
 
 import { Auth } from 'aws-amplify'
 import config from '../aws-exports'
@@ -21,7 +11,9 @@ import { createUser, confirmUserSignUp } from '../actions'
 
 import Input from '../components/Input'
 import Button from '../components/Button'
-import Amplify from "aws-amplify-react-native";
+import Amplify from "aws-amplify-react-native"
+
+import withObservables from '@nozbe/with-observables'
 
 const initialState = {
     username: '',
@@ -73,11 +65,8 @@ class SignUp extends React.Component {
                         resizeMode="contain"
                     />
                 </View>
-                <Text style={styles.greeting}>
-                    Welcome,
-                </Text>
-                <Text style={styles.greeting2}>
-                    sign up to continue
+                <Text style={styles.register}>
+                    Lets get started, athlete.
                 </Text>
                 <View style={styles.inputContainer}>
                     <Input
@@ -165,16 +154,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 40
     },
-    greeting: {
+    register: {
         marginTop: 20,
         fontFamily: fonts.light,
         fontSize: 24
-    },
-    greeting2: {
-        fontFamily: fonts.light,
-        color: '#666',
-        fontSize: 24,
-        marginTop: 5
     },
     heading: {
         flexDirection: 'row'

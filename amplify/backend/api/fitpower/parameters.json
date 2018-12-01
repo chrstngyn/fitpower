@@ -1,0 +1,9 @@
+{
+    "AppSyncApiName": "fitpower",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito2fc5c903",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

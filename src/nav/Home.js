@@ -195,11 +195,13 @@ class Home extends React.Component {
         var d = new Date()
 
         this.state.workoutArray.push({
-            'date' : d.getFullYear() +
-                "/" + (d.getMonth() + 1) +
-                "/" + d.getDate(),
+            'output' : (d.getMonth() + 1) +
+                "/" + d.getDate() +
+                "/" + d.getFullYear(),
+            'predict' : this.state.workoutPrediction,
         })
         this.setState({ workoutArray: this.state.workoutArray })
+
     }
 
     deleteWorkout(key) {

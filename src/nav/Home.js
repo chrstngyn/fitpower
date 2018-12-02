@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Button, Animated, Dimensions, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Image, Button, Animated, Dimensions, ScrollView, TouchableOpacity } from 'react-native'
 
 import { connect } from 'react-redux'
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify'
@@ -29,31 +29,30 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: '',
+            powerArray: [],
+            workoutArray: [],
+            kwhProduced: 0,
+            b1: 0,
+            b2: 0,
+            r2: 0,
+            workoutPrediction: '',
             value: false,
             devices: [],
             isEnabled: false,
             connected: false,
             crash: false,
-            data: '',
-            powerArray: [0.4,0.4,0.4,0.3,0.3,0.3,0.3,0.3,0.2,0.2,0.2,0.2,0.1,0.1,0.1,0.1],
-            testvalue: 22,
-            b1: 0,
-            b2: 0,
-            r2: 0,
-            workoutPrediction: '',
-            workoutArray: [],
-            logPressed: false,
-            predictPressed: false,
-            workoutDone: false
+            analyzeWorkout: false
         }
     }
 
     // log regression
     logRegression = () => {
+        alert('workout finished')
         let numDataPoints = 15
         let x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
         let x1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        let y = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        let y = []
 
         // x1 = ln(x)
         for (let i = 0; i < numDataPoints; i++) {
@@ -67,9 +66,8 @@ class Home extends React.Component {
         }
 
         // copy array into variable
-
         for (let i = 0; i < 15; i++) {
-            y[i] = this.state.powerArray[i]
+            y[i] = parseFloat(this.state.powerArray[i]);
         }
 
         // sum of all points in y
@@ -77,6 +75,8 @@ class Home extends React.Component {
         for (let i = 0; i < numDataPoints; i++) {
             sumy += y[i]
         }
+
+        let totalKwh = sumy / 1000 * 0.5
 
         // calculate means
         let meany = sumy
@@ -105,6 +105,9 @@ class Home extends React.Component {
             yPredict += calcB1 + (calcB2*Math.log(i))
         }
 
+        // kWh
+        yPredict = yPredict / 1000 * 0.5
+
         this.setState({
             // r squared value
             r2: calcR2,
@@ -113,10 +116,11 @@ class Home extends React.Component {
             b2: calcB2,
             //
             b1: calcB1,
-            workoutPrediction: yPredict.toFixed(3)
+            workoutPrediction: yPredict.toFixed(3),
+            kwhProduced: totalKwh.toFixed(3)
         })
 
-        alert(y);
+        // alert(y);
         // alert(this.state.r2)
         // alert(this.state.b2)
         // alert(this.state.b1)
@@ -124,38 +128,55 @@ class Home extends React.Component {
 
     // start workout
     startWorkout = () => {
-        let newarray = this.state.powerArray;
-        // this.setState (state => {
-        //     const powerArray = state.powerArray.push(state.testvalue)
-        // })
-
-        // for(let i = 0; i < this.state.powerArray.length; i++) {
-        //     let m = this.state.powerArray[i] + 1;
-        //     this.state.powerArray[i] = m;
-        // }
-        // alert(this.state.powerArray);
-
+        this.setState ({
+            analyzeWorkout: false
+        })
         // set timer to collect data for 15 seconds
-        setTimeout(() => {
-            // check if connect
-            if (this.state.connected) {
-                // read data from Bluetooth devicde
-                BluetoothSerial.readFromDevice().then((data) => {
+        // setTimeout(() => {
+        //     // check if connect
+        //     if (this.state.connected) {
+        //         // read data from Bluetooth devicde
+        //         BluetoothSerial.readFromDevice().then((data) => {
+        //
+        //             // collect data every second
+        //             setInterval(() => {
+        //                 // if (data) {
+        //                     this.setState(state => {
+        //                         const powerArray = state.powerArray.push(data)
+        //                     })
+        //                 // }
+        //             }, 5000)
+        //         })
+        //     }
+        // }, 15000)
+    let time = 0
+    let timerId = setInterval(() => {
+        this.setState(state => {
 
-                    // collect data every second
-                    setInterval(() => {
-                        if (data) {
-                            this.setState(state => {
-                                const powerArray = state.powerArray.push(data)
-                            })
-                        }
-                    }, 1000)
-                })
+            const powerArray = state.powerArray.push(1.1)
+            // time += 1
+            // alert(time)
+            if(time > 14) {
+                alert('workout finished')
             }
-        }, 10000)
+        })
+    }, 1000)
 
-        alert(this.state.powerArray)
+    setTimeout(() => { clearInterval(timerId); this.logRegression(); }, 16000);
 
+    // let timerId = setInterval(() => {
+    //     this.setState(state => {
+    //         const powerArray = state.powerArray.push(data)
+    //         alert(this.state.powerArray)
+    //     })
+    // }, 1000)
+
+    // if (this.state.connected) {
+    //     BluetoothSerial.readFromDevice().then((data) => {
+    //         setTimeout(() => { clearInterval(timerId); alert('workout finished'); }, 16000);
+    //
+    //      })
+    // }
     };
 
     // connect to bluetooth module
@@ -178,29 +199,21 @@ class Home extends React.Component {
             .catch((err) => alert(err.message))
     }
 
-    // // read data sending from bluetooth module
-    // readData() {
-    //     BluetoothSerial.readFromDevice()
-    //         .then((data) => {
-    //                 if (data && this.state.value && this.state.crash === false) {
-    //                     this.setState({
-    //                         crash: true
-    //                     })
-    //                 }
-    //         })
-    //         .catch((err) => { console.log(err) })
-    // }
-
     addWorkout() {
         var d = new Date()
 
         this.state.workoutArray.push({
-            'output' : (d.getMonth() + 1) +
+            'date' : (d.getMonth() + 1) +
                 "/" + d.getDate() +
                 "/" + d.getFullYear(),
-            'predict' : this.state.workoutPrediction,
+            'output' : 'kWh produced: ' + this.state.kwhProduced,
+            'predict' : 'prediction for 30 min workout (kWh): ' + this.state.workoutPrediction,
         })
-        this.setState({ workoutArray: this.state.workoutArray })
+        this.setState({
+            workoutArray: this.state.workoutArray,
+            powerArray: [],
+            analyzeWorkout: true
+        })
 
     }
 
@@ -209,9 +222,6 @@ class Home extends React.Component {
         this.setState({ workoutArray: this.state.workoutArray })
     }
 
-    componentDidUpdate(prevProps, prevState) {
-
-    }
 
     componentDidMount() {
         Promise.all([BluetoothSerial.isEnabled(), BluetoothSerial.list()])
@@ -284,11 +294,9 @@ class Home extends React.Component {
         return (
                 <View style={styles.container}>
                     <View style={styles.homeContainer}>
-
-                        <Text onPress={this.startWorkout.bind(this)} style={styles.welcome}>Start Workout</Text>
-                        <Text onPress={this.logRegression.bind(this)} style={styles.welcome}>Test Log Regression</Text>
-                        <Text onPress={this.addWorkout.bind(this)} style={styles.welcome}>Add Workout</Text>
-                        <Text onPress={this.logout.bind(this)} style={styles.welcome}>Logout</Text>
+                        <TouchableOpacity onPress={this.startWorkout.bind(this)}><Text style={styles.welcome}>Start Workout</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={this.addWorkout.bind(this)}><Text style={styles.welcome}>Add Workout</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={this.logout.bind(this)}><Text style={styles.welcome}>Logout</Text></TouchableOpacity>
                     </View>
                     <ScrollView>
                             {workouts}

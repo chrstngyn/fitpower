@@ -5,10 +5,11 @@ export default class Workout extends React.Component {
     render(){
         return(
             <View key={this.props.keyval} style={styles.workout}>
+                <Text style={styles.displayData}>{this.props.val.date}</Text>
                 <Text style={styles.displayData}>{this.props.val.output}</Text>
                 <Text style={styles.displayData}>{this.props.val.predict}</Text>
                 <TouchableOpacity onPress={this.props.deleteMethod} style={styles.workoutDelete}>
-                    <Text style={styles.workoutDeleteText}>D</Text>
+                    <Text style={styles.workoutDeleteText}>DELETE</Text>
                  </TouchableOpacity>
             </View>
         );
@@ -38,6 +39,6 @@ const styles = StyleSheet.create({
         right: 10,
     },
     workoutDeleteText: {
-        color: 'black'
+        color: 'grey'
     }
 })

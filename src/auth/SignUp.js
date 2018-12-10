@@ -11,9 +11,7 @@ import { createUser, confirmUserSignUp } from '../actions'
 
 import Input from '../components/Input'
 import Button from '../components/Button'
-import Amplify from "aws-amplify-react-native"
-
-import withObservables from '@nozbe/with-observables'
+import Amplify from 'aws-amplify-react-native'
 
 const initialState = {
     username: '',
@@ -60,7 +58,6 @@ class SignUp extends React.Component {
             <View style={styles.container}>
                 <View style={styles.heading}>
                     <Image
-                        source={require('../assets/shape.png')}
                         style={styles.headingImage}
                         resizeMode="contain"
                     />

@@ -58,7 +58,6 @@ class SignIn extends React.Component {
             <View style={styles.container}>
                 <View style={styles.heading}>
                     <Image
-                        source={require('../assets/shape.png')}
                         style={styles.headingImage}
                         resizeMode="contain"
                     />
@@ -69,7 +68,7 @@ class SignIn extends React.Component {
 
                 <View style={styles.inputContainer}>
                     <Input
-                        placeholder="User Name"
+                        placeholder="Username"
                         type='username'
                         onChangeText={this.onChangeText}
                         value={this.state.username}

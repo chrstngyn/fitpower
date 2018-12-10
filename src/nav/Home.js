@@ -14,6 +14,7 @@ const { width, height } = Dimensions.get('window')
 
 import Workout from '../components/Workout'
 
+
 // define bluetooth module to connnect to
 const device = {
     name: 'RNBT-584E',
@@ -36,7 +37,10 @@ class Home extends React.Component {
             b1: 0,
             b2: 0,
             r2: 0,
+            goalPredict: 0,
+            charge10Percent: 0,
             workoutPrediction: '',
+            powerInput: '',
             value: false,
             devices: [],
             isEnabled: false,
@@ -44,6 +48,7 @@ class Home extends React.Component {
             crash: false,
             analyzeWorkout: false
         }
+
     }
 
     // log regression
@@ -53,6 +58,7 @@ class Home extends React.Component {
         let x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
         let x1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         let y = []
+        let goalCalc = this.state.powerInput
 
         // x1 = ln(x)
         for (let i = 0; i < numDataPoints; i++) {
@@ -96,11 +102,22 @@ class Home extends React.Component {
             syy += Math.pow(yy, 2);
         }
 
-        let calcR2 = 1 - (sxx/sxy)
         let calcB2 = sxy/sxx
         let calcB1 = meany - (calcB2 * meanx1)
         let yPredict = 0
 
+        // 1/4 t^2 (2 a + 2 b log(t) - 3 b)
+        // t = e^(3/2 - a/b)
+
+        // predicted set value / 15 sec
+        let predictedSetValue = sumy / 15
+
+        // energy to charge phone = 2.76
+        // 2.76 / predictSetValue (watts)
+        let charge10 =  2.76 / predictedSetValue * 60 / 10
+
+
+        // 30 min of working out
         for (let i = 1; i < 1800; i++) {
             yPredict += calcB1 + (calcB2*Math.log(i))
         }
@@ -108,22 +125,17 @@ class Home extends React.Component {
         // kWh
         yPredict = yPredict / 1000 * 0.5
 
+        let goalOutput = Math.exp((goalCalc - calcB1) / calcB2)/60
+
         this.setState({
-            // r squared value
-            r2: calcR2,
 
             // find coefficients
             b2: calcB2,
-            //
             b1: calcB1,
             workoutPrediction: yPredict.toFixed(3),
-            kwhProduced: totalKwh.toFixed(3)
+            kwhProduced: totalKwh.toFixed(3),
+            charge10Percent: charge10.toFixed(3),
         })
-
-        // alert(y);
-        // alert(this.state.r2)
-        // alert(this.state.b2)
-        // alert(this.state.b1)
     }
 
     // start workout
@@ -131,53 +143,26 @@ class Home extends React.Component {
         this.setState ({
             analyzeWorkout: false
         })
-        // set timer to collect data for 15 seconds
-        // setTimeout(() => {
-        //     // check if connect
-        //     if (this.state.connected) {
-        //         // read data from Bluetooth devicde
-        //         BluetoothSerial.readFromDevice().then((data) => {
-        //
-        //             // collect data every second
-        //             setInterval(() => {
-        //                 // if (data) {
-        //                     this.setState(state => {
-        //                         const powerArray = state.powerArray.push(data)
-        //                     })
-        //                 // }
-        //             }, 5000)
-        //         })
-        //     }
-        // }, 15000)
-    let time = 0
-    let timerId = setInterval(() => {
-        this.setState(state => {
 
-            const powerArray = state.powerArray.push(1.1)
-            // time += 1
-            // alert(time)
-            if(time > 14) {
-                alert('workout finished')
+        let data1 = 0;
+        let timerId = setInterval(() => {
+            if (this.state.connected) {
+                BluetoothSerial.readFromDevice().then((data) =>
+                    this.setState(state => {
+                    if (!data) {
+                        const powerArray = state.powerArray.push(data1)
+                    } else {
+                        const powerArray = state.powerArray.push(data)
+                    }
+                        alert(this.state.powerArray)
+                    })
+                )
             }
-        })
-    }, 1000)
+        }, 1000)
 
-    setTimeout(() => { clearInterval(timerId); this.logRegression(); }, 16000);
+        setTimeout(() => { clearInterval(timerId); this.logRegression(); }, 16000);
+        };
 
-    // let timerId = setInterval(() => {
-    //     this.setState(state => {
-    //         const powerArray = state.powerArray.push(data)
-    //         alert(this.state.powerArray)
-    //     })
-    // }, 1000)
-
-    // if (this.state.connected) {
-    //     BluetoothSerial.readFromDevice().then((data) => {
-    //         setTimeout(() => { clearInterval(timerId); alert('workout finished'); }, 16000);
-    //
-    //      })
-    // }
-    };
 
     // connect to bluetooth module
     connect() {
@@ -201,14 +186,15 @@ class Home extends React.Component {
 
     addWorkout() {
         var d = new Date()
-
         this.state.workoutArray.push({
             'date' : (d.getMonth() + 1) +
                 "/" + d.getDate() +
                 "/" + d.getFullYear(),
-            'output' : 'kWh produced: ' + this.state.kwhProduced,
-            'predict' : 'prediction for 30 min workout (kWh): ' + this.state.workoutPrediction,
+            'output' : 'kWh produced: ' + this.state.kwhProduced + ' kWh',
+            'predict' : 'prediction for 30 min workout: ' + this.state.workoutPrediction + ' kWh',
+            'goal' : 'time to charge phone +10%: ' + this.state.charge10Percent + ' min',
         })
+
         this.setState({
             workoutArray: this.state.workoutArray,
             powerArray: [],
@@ -222,7 +208,6 @@ class Home extends React.Component {
         this.setState({ workoutArray: this.state.workoutArray })
     }
 
-
     componentDidMount() {
         Promise.all([BluetoothSerial.isEnabled(), BluetoothSerial.list()])
             .then((values) => {
@@ -234,35 +219,10 @@ class Home extends React.Component {
                 if (this.state.isEnabled === false) {
                     alert('Bluetooth must be switched on and paired with device')
                 }
-
             })
 
         // connect bluetooth device
         this.connect();
-
-
-        // for testing getting data: alert if data is not null or empty
-        // setTimeout(() => {
-        //     if (this.state.connected) {
-        //         BluetoothSerial.readFromDevice().then((data) => {
-        //
-        //             setInterval(() => {
-        //             // dispaly data if it exists
-        //                 if(data) {
-        //                     alert(data)
-        //                 }
-        //             }, 1000)
-        //
-        //         }) , 10000
-        //     }
-        // })
-
-        // BluetoothSerial.readFromDevice().then((data) => {
-        //     if(data !==  null && data !== '') {
-        //         alert(data)
-        //     }
-        // })
-
     }
 
     // user logout
@@ -284,6 +244,7 @@ class Home extends React.Component {
         // { this.state.powerArray.map((item, key)=>(
         // <Text key={key}> { item } </Text>)
         // )}
+//<Timer interval={timerData.timer} />
 
     render() {
         let workouts = this.state.workoutArray.map((val, key) => {
@@ -294,7 +255,10 @@ class Home extends React.Component {
         return (
                 <View style={styles.container}>
                     <View style={styles.homeContainer}>
-                        <TouchableOpacity onPress={this.startWorkout.bind(this)}><Text style={styles.welcome}>Start Workout</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={this.startWorkout.bind(this)}>
+                            <Text style={styles.welcome}>Start</Text>
+                        </TouchableOpacity>
+
                         <TouchableOpacity onPress={this.addWorkout.bind(this)}><Text style={styles.welcome}>Add Workout</Text></TouchableOpacity>
                         <TouchableOpacity onPress={this.logout.bind(this)}><Text style={styles.welcome}>Logout</Text></TouchableOpacity>
                     </View>
@@ -311,7 +275,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1
+        flex: 1,
+        paddingHorizontal: 20
     },
     homeContainer: {
         alignItems: 'center'
@@ -330,6 +295,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingHorizontal: 20,
         textAlign: 'center'
+    },
+    timer: {
+        fontSize: 76,
+        fontWeight: '200',
+        paddingTop: 100,
+    },
+    row: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        justifyContent: 'space-between',
+        marginTop: 80
     }
 })
 

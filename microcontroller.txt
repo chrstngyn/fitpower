@@ -1,0 +1,111 @@
+// Author: Dan Passarello, Created: 11/9/18, Title: fullcode3.c
+
+// CONFIG
+
+#include <htc.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <xc.h>
+#include <math.h>
+#define _XTAL_FREQ 4000000
+
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+
+int main(void) {
+ 
+        int Vpin16;    
+        int Vpin15;
+        //int Vpin14;
+        int dec1;
+        //float Vlow;
+        float Vgen;
+        float Vhigh;
+        float Igen;
+        float Pgen;
+        
+        TRISC = 0b00000111;     //Set pin 15 and pin 16 as inputs, all others output
+        ANSEL = 0b01110000;     //Set pin 15, pin 16, and pin 14 as analog inputs
+
+        TXSTAbits.BRGH = 1;  //High speed set
+        TXSTAbits.TXEN = 1;  // Enable Transmitter
+        RCSTAbits.SPEN = 1;  //Serial Port enabled (configures RX/DT and TX/CK pins as seral port pins)
+        SPBRG = 25;          //Decimal value to get 9600 Baud rate with Fosc 4MHz
+
+        ADCON1bits.ADCS = 0b001; // Sets Fosc/8 as the ADC conversion clock because it must be greater than 1.5 us.  Set to 2 us
+        
+    while(1){  
+        int k = 0;
+        int myHex = 0x30;
+        int check = 0;
+        int i = 1;
+        float Ptot = 0;
+
+        while(k < 10){        
+            while(i <= 50){
+                 
+                    //READING GENERATED VOLTAGE - PIN 16
+                     ADCON0 = 0b10010001;  // Configure ADC module.  Selecting analog input AN4 - pin16
+                     __delay_us(10);  //Wait the acquisition time (about 5 us)
+                     ADCON0bits.GO = 1;  //Start the conversion
+                     while(ADCON0bits.GO==1){}; //Wait for the conversion to end
+                     Vpin16 = (ADRESH<<8) + ADRESL; //Combines the 10 bits of the conversion
+                     Vgen = (Vpin16 / 10.5f);
+
+                     //READING Voltage - PIN 15
+                     ADCON0 = 0b10010101;  // Configure ADC module.  Selecting analog input AN5 - pin15
+                     __delay_us(5);  //Wait the acquisition time (about 5 us)
+                     ADCON0bits.GO = 1;  //Start the conversion
+                     while(ADCON0bits.GO==1){}; //Wait for the conversion to end
+                     Vpin15 = (ADRESH<<8) + ADRESL; //Combines the 10 bits of the conversion
+                     Vhigh = ((Vpin15/1023.0f));
+
+                    //READING Voltage - PIN 14
+                    //ADCON0 = 0b10010001;  // Configure ADC module.  Selecting analog input AN4 - pin14
+                    //__delay_us(5);  //Wait the acquisition time (about 5 us)
+                    //ADCON0bits.GO = 1;  //Start the conversion
+                    //while(ADCON0bits.GO==1){}; //Wait for the conversion to end
+                    //Vpin14 = (ADRESH<<8) + ADRESL; //Combines the 10 bits of the conversion
+                    //Vlow = ((Vpin14 / 1023.0f));
+                    
+                    Igen = (Vhigh) / 0.1f;
+                    
+                    Pgen = Vgen*Igen;
+                    Ptot = Ptot + Pgen;
+                    
+                i = i + 1;
+            }
+
+           Pgen = Ptot / 50.0f;  //Avg  power values
+       
+                if (Pgen >= k & Pgen < k + 1){
+                    while (check <= 9){
+                        if(check == k){
+                            TXREG = myHex;
+                            dec1 = (Pgen - k)*10.0f;
+                        }
+                        myHex++;
+                        check++;
+                    }
+                    check = 0;
+                    myHex = 0x30;
+                    while(check <=9){
+                        if(check == dec1){
+                            __delay_ms(5);
+                            TXREG = 0x2E;        // Decimal point
+                            __delay_ms(5);
+                            TXREG = myHex;
+                        }
+                        myHex++;
+                        check++;
+                    }
+                    //__delay_ms(5);
+                    //TXREG = 0x57;        // Send W
+                    __delay_ms(5);
+                    TXREG = 0x20;
+                    __delay_ms(500);
+                }
+            k = k + 1;
+            }
+        }
+    return 0;
+}
